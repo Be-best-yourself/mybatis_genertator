@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+	<!--数据库驱动包路径,不指定，使用默认 -->
+	<!-- <classPathEntry location=""/> -->
+
+	<context id="mysql" targetRuntime="MyBatis3">
+	
+		<!-- 自定义插件，生成SelectAll等，生成*Dao.java覆盖原有*Dao.java -->
+		<plugin type="com.common.plugin.mybatis.CustomPlugin">
+			<!--targetProject必须： *Dao目录 -->
+			<property name="targetProject" value="src/main/java" />
+			<!--targetProject必须： baseDao的全类名 -->
+			<property name="baseDao" value="com.common.dao.BaseDao"/>
+			<!-- annotation可选：默认无，为全限定注解名
+			<property name="annotation" value="org.apache.ibatis.annotations.Mapper"/>
+			-->
+		</plugin>
+		
+		<!-- 自定义插件，生成基本的service-->
+		<plugin type="com.common.plugin.mybatis.ServicePlugin">
+			<property name="serviceTargetDir" value="src/main/java"/>
+			<property name="serviceInterfaceClass" value="com.zfw.service.TestService"/>
+			<property name="implementationClass" value="com.zfw.service.impl.TestServiceImpl"/>
+			<!-- annotation可选：默认无，为全限定注解名
+			<property name="annotation" value="org.springframework.stereotype.Service"/>-->
+		
+		</plugin>
+		
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
+		<commentGenerator>
+			<!-- 这个元素用来去除指定生成的注释中是否包含生成的日期 false:表示保护 -->
+			<!-- 如果生成日期，会造成即使修改一个字段，整个实体类所有属性都会发生变化，不利于版本控制，所以设置为true -->
+			<property name="suppressDate" value="true" />
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		<!--数据库链接URL，用户名、密码 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://192.168.1.222:3306/zfw"
+			userId="root" password="123456">
+		</jdbcConnection>
+		<javaTypeResolver>
+			<!-- This property is used to specify whether MyBatis Generator should 
+				force the use of java.math.BigDecimal for DECIMAL and NUMERIC fields, -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+		<!-- 生成模型的包名和位置 -->
+		<javaModelGenerator targetPackage="com.zfw.entity"
+			targetProject="src/main/java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		<!-- 生成映射文件的包名和位置 -->
+		<sqlMapGenerator targetPackage="com.zfw.dao"
+			targetProject="src/main/java">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+		<!-- 生成DAO的包名和位置 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.zfw.dao" targetProject="src/main/java">
+		</javaClientGenerator>
+
+		<!-- 要生成哪些表,多个表，依次加入table标签 -->
+		<table tableName="t_test" domainObjectName="Test"
+			mapperName="TestDao" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+	</context>
+</generatorConfiguration>

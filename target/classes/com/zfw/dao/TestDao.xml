@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zfw.dao.TestDao">
+	<resultMap id="BaseResultMap" type="com.zfw.entity.Test">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="c1" jdbcType="VARCHAR" property="c1" />
+		<result column="c2" jdbcType="VARCHAR" property="c2" />
+		<result column="c3" jdbcType="VARCHAR" property="c3" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, c1, c2, c3
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_test
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_test
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zfw.entity.Test">
+		insert into t_test (id, c1, c2, c3
+		)
+		values (#{id,jdbcType=INTEGER}, #{c1,jdbcType=VARCHAR},
+		#{c2,jdbcType=VARCHAR}, #{c3,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.zfw.entity.Test">
+		insert into t_test
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="c1 != null">
+				c1,
+			</if>
+			<if test="c2 != null">
+				c2,
+			</if>
+			<if test="c3 != null">
+				c3,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="c1 != null">
+				#{c1,jdbcType=VARCHAR},
+			</if>
+			<if test="c2 != null">
+				#{c2,jdbcType=VARCHAR},
+			</if>
+			<if test="c3 != null">
+				#{c3,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.zfw.entity.Test">
+		update t_test
+		<set>
+			<if test="c1 != null">
+				c1 = #{c1,jdbcType=VARCHAR},
+			</if>
+			<if test="c2 != null">
+				c2 = #{c2,jdbcType=VARCHAR},
+			</if>
+			<if test="c3 != null">
+				c3 = #{c3,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.zfw.entity.Test">
+		update t_test
+		set c1 = #{c1,jdbcType=VARCHAR},
+		c2 = #{c2,jdbcType=VARCHAR},
+		c3 = #{c3,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<insert id="insertTCacheId" parameterType="com.zfw.entity.Test">
+		insert into t_test (id,c1,c2,c3) values
+		(#{id,jdbcType=INTEGER},#{c1,jdbcType=VARCHAR},#{c2,jdbcType=VARCHAR},#{c3,jdbcType=VARCHAR})
+		<selectKey resultType="int" keyProperty="id">
+			select @@identity</selectKey>
+	</insert>
+	<select id="selectAll" parameterType="com.zfw.entity.Test"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_test
+	</select>
+	<select id="selectByPage" parameterType="com.common.entity.Page"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_test limit #{page.startSize,jdbcType=INTEGER},
+		#{page.pageSize,jdbcType=INTEGER}
+	</select>
+	<select id="selectByT" parameterType="com.common.entity.Page"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_test
+		<where>
+			<if test="t.id!= null">
+				and id=#{t.id,jdbcType=INTEGER}
+			</if>
+			<if test="t.c1!= null">
+				and c1=#{t.c1,jdbcType=VARCHAR}
+			</if>
+			<if test="t.c2!= null">
+				and c2=#{t.c2,jdbcType=VARCHAR}
+			</if>
+			<if test="t.c3!= null">
+				and c3=#{t.c3,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	<select id="selectByPageAndT" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_test
+		<where>
+			<if test="t.id!= null">
+				and id=#{t.id,jdbcType=INTEGER}
+			</if>
+			<if test="t.c1!= null">
+				and c1=#{t.c1,jdbcType=VARCHAR}
+			</if>
+			<if test="t.c2!= null">
+				and c2=#{t.c2,jdbcType=VARCHAR}
+			</if>
+			<if test="t.c3!= null">
+				and c3=#{t.c3,jdbcType=VARCHAR}
+			</if>
+		</where>
+		limit #{page.startSize,jdbcType=INTEGER},
+		#{page.pageSize,jdbcType=INTEGER}
+	</select>
+</mapper>
