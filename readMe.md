@@ -1,11 +1,11 @@
-# 自定义Mybatis_Genertor插件 生成语句：mysql
+## 自定义Mybatis_Genertor插件 生成语句：mysql
 
-## 功能：在Mybatis_Genertor原有的基础上，加上selectAll(),selectByPage(page),selectByT(T),selectByPageAndT(page,T)
-## selectAll():查询所有
-## selectByPage(page):分页查询
-## selectByT(T):根据T实体类作为条件查询
-## selectByPage(page,T):根据T实体类作为条件分页查询
-## insertSelective(t):插入对象，并返回Id存入到t.setId()
+### 功能：在Mybatis_Genertor原有的基础上，加上selectAll(),selectByPage(page),selectByT(T),selectByPageAndT(page,T)
+### selectAll():查询所有
+### selectByPage(page):分页查询
+### selectByT(T):根据T实体类作为条件查询
+### selectByPage(page,T):根据T实体类作为条件分页查询
+### insertTCacheId(T):插入对象，并返回Id存入到t.setId()
 
 ---
 # CustomPlugin自定义插件，主要功能：生成mapper.xml中的selectAll(),selectByPage(page)等
@@ -38,6 +38,8 @@ public interface TestDao {
 
     int insertSelective(Test record);
 
+    int insertTCacheId(T t);
+    
     Test selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(Test record);
@@ -45,7 +47,7 @@ public interface TestDao {
     int updateByPrimaryKey(Test record);
 }
 ```
-## 执行此插件后
+### 执行此插件后
 ```
 package com.zfw.dao;
 
@@ -58,7 +60,7 @@ import com.zfw.entity.Test;
 public interface TestDao extends BaseDao<Test> {
 }
 ```
-## BaseDao<T>统一管理基本操作，其它Dao接口继承BaseDao<T>
+### BaseDao<T>统一管理基本操作，其它Dao接口继承BaseDao<T>
 ```
 package com.common.dao;
 
@@ -76,7 +78,7 @@ public interface BaseDao<T> {
 
 	int insertSelective(T t);
 
-	int insertSelective(T t);
+	int insertTCacheId(T t);
 	
 	T selectByPrimaryKey(Integer id);
 
